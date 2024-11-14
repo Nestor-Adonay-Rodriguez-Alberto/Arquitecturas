@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Web_API.Handlers.Empleados.DTOs;
 using Web_API.Handlers.Empleados.Interfaces;
 using Web_API.Handlers.Empleados.Services;
+
 
 namespace Web_API.Handlers.Empleados.Controllers
 {
@@ -13,7 +13,7 @@ namespace Web_API.Handlers.Empleados.Controllers
     public class EmpleadoController : ControllerBase
     {
         public IEmpleado _empleadoRepository;
-
+         
         public EmpleadoController(IEmpleado empleadoRepository)
         {
             _empleadoRepository = empleadoRepository;
@@ -21,11 +21,14 @@ namespace Web_API.Handlers.Empleados.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Listar()
+        public async Task<IActionResult> Listar(int? pageNumber, int? pageSize)
         {
             EmpleadoService _service = new(_empleadoRepository);
 
-            AllEmpleadosDTO allEmpleados = await _service.Listar();
+            int number = pageNumber ?? 1;
+            int size = pageSize ?? 2;
+
+            AllEmpleadosDTO allEmpleados = await _service.Listar(number, size);
 
             return Ok(allEmpleados);
         }
@@ -37,7 +40,7 @@ namespace Web_API.Handlers.Empleados.Controllers
 
             EmpleadoDTO? empleado = await _service.Obtener_PoId(id);
 
-            if(empleado==null)
+            if (empleado == null)
             {
                 return NotFound("Registro No Existente.");
             }
@@ -46,7 +49,7 @@ namespace Web_API.Handlers.Empleados.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Crear([FromBody]CrearEmpleadoDTO crearEmpleadoDTO)
+        public async Task<IActionResult> Crear([FromBody] CrearEmpleadoDTO crearEmpleadoDTO)
         {
             EmpleadoService _service = new(_empleadoRepository);
 

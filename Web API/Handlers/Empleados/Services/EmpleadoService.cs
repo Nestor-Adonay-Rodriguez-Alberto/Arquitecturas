@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.Identity.Client;
 using Web_API.Handlers.Empleados.DTOs;
 using Web_API.Handlers.Empleados.Interfaces;
 using Web_API.Models.Entities;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace Web_API.Handlers.Empleados.Services
 {
@@ -19,22 +18,26 @@ namespace Web_API.Handlers.Empleados.Services
 
 
 
-        public async Task<AllEmpleadosDTO> Listar()
+        public async Task<AllEmpleadosDTO> Listar(int pageNumber, int pageSize)
         {
             List<Empleado> empleados = await _EmpleadoRepository.Listar();
 
+            // Paginar la lista de empleados dentro de AllEmpleadosDTO
+            var empleadosPaginados = empleados.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
             // DTO a retornar:
             AllEmpleadosDTO allEmpleados = new();
+            empleados = empleadosPaginados;
 
-            foreach(Empleado empleado in empleados)
+            foreach (Empleado empleado in empleados)
             {
                 allEmpleados.List_Empleados.Add(new EmpleadoDTO
                 {
-                    Id=empleado.Id,
-                    Nombre=empleado.Nombre,
-                    Edad=empleado.Edad,
-                    Puesto=empleado.Puesto,
-                    Salario=empleado.Salario
+                    Id = empleado.Id,
+                    Nombre = empleado.Nombre,
+                    Edad = empleado.Edad,
+                    Puesto = empleado.Puesto,
+                    Salario = empleado.Salario
                 });
             }
 
@@ -45,7 +48,7 @@ namespace Web_API.Handlers.Empleados.Services
         {
             Empleado? empleado = await _EmpleadoRepository.Obtener_PoId(Id);
 
-            if(empleado==null)
+            if (empleado == null)
             {
                 return null;
             }
@@ -66,10 +69,10 @@ namespace Web_API.Handlers.Empleados.Services
         {
             Empleado empleado = new Empleado
             {
-                Nombre=crearEmpleadoDTO.Nombre,
-                Edad=crearEmpleadoDTO.Edad,
-                Puesto=crearEmpleadoDTO.Puesto,
-                Salario=crearEmpleadoDTO.Salario
+                Nombre = crearEmpleadoDTO.Nombre,
+                Edad = crearEmpleadoDTO.Edad,
+                Puesto = crearEmpleadoDTO.Puesto,
+                Salario = crearEmpleadoDTO.Salario
             };
 
             return await _EmpleadoRepository.Crear(empleado);
@@ -83,7 +86,7 @@ namespace Web_API.Handlers.Empleados.Services
             {
                 return 0;
             }
-           
+
             encontrado.Id = empleadoDTO.Id;
             encontrado.Nombre = empleadoDTO.Nombre;
             encontrado.Edad = empleadoDTO.Edad;
