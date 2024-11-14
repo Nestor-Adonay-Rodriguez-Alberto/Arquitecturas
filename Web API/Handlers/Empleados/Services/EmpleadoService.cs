@@ -18,12 +18,14 @@ namespace Web_API.Handlers.Empleados.Services
 
 
 
-        public async Task<AllEmpleadosDTO> Listar(int pageNumber, int pageSize)
+        public async Task<AllEmpleadosDTO> Listar(int? pageNumber, int? pageSize)
         {
             List<Empleado> empleados = await _EmpleadoRepository.Listar();
+            int number = pageNumber ?? 1;
+            int size = pageSize ?? 2;
 
             // Paginar la lista de empleados dentro de AllEmpleadosDTO
-            var empleadosPaginados = empleados.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            var empleadosPaginados = empleados.Skip((number - 1) * size).Take(size).ToList();
 
             // DTO a retornar:
             AllEmpleadosDTO allEmpleados = new();

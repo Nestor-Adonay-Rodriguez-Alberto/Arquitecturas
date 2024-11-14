@@ -23,12 +23,9 @@ namespace Web_API.Handlers.Empleados.Controllers
         [HttpGet]
         public async Task<IActionResult> Listar(int? pageNumber, int? pageSize)
         {
-            EmpleadoService _service = new(_empleadoRepository);
+            EmpleadoService _service = new(_empleadoRepository);      
 
-            int number = pageNumber ?? 1;
-            int size = pageSize ?? 2;
-
-            AllEmpleadosDTO allEmpleados = await _service.Listar(number, size);
+            AllEmpleadosDTO allEmpleados = await _service.Listar(pageNumber, pageSize);
 
             return Ok(allEmpleados);
         }
