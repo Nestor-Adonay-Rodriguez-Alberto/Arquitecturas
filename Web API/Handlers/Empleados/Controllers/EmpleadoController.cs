@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Web_API.Handlers.Empleados.DTOs;
 using Web_API.Handlers.Empleados.Interfaces;
@@ -6,6 +7,7 @@ using Web_API.Handlers.Empleados.Services;
 
 namespace Web_API.Handlers.Empleados.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EmpleadoController : ControllerBase

@@ -1,4 +1,5 @@
-﻿using Microsoft.Identity.Client;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Client;
 using Web_API.Handlers.Empleados.DTOs;
 using Web_API.Handlers.Empleados.Interfaces;
 using Web_API.Models.Entities;
@@ -6,6 +7,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Web_API.Handlers.Empleados.Services
 {
+    [Authorize]
     public class EmpleadoService
     {
         public IEmpleado _EmpleadoRepository;
