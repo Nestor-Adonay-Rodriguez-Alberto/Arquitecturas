@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Web_API.Handlers.Empleados.Interfaces;
-using Web_API.Handlers.Empleados.Repositories;
-using Web_API.Models.Database;
+using Web_API.Domain.Repositories;
+using Web_API.Infraestructure.Database;
+using Web_API.Infraestructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

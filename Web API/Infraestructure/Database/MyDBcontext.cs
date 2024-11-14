@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Web_API.Models.Entities;
+using Web_API.Domain.Entities;
 
-namespace Web_API.Models.Database
+namespace Web_API.Infraestructure.Database
 {
     public class MyDBcontext : DbContext
     {

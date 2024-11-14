@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Web_API.Handlers.Empleados.DTOs;
-using Web_API.Handlers.Empleados.Interfaces;
-using Web_API.Handlers.Empleados.Services;
+using Web_API.Aplication.Services;
+using Web_API.Domain.DTOs;
+using Web_API.Domain.Repositories;
 
-namespace Web_API.Handlers.Empleados.Controllers
+namespace Web_API.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class EmpleadoController : ControllerBase
     {
-        public IEmpleado _empleadoRepository;
+        public IEmpleado _empleadoRepository; 
 
         public EmpleadoController(IEmpleado empleadoRepository)
         {
@@ -35,7 +35,7 @@ namespace Web_API.Handlers.Empleados.Controllers
 
             EmpleadoDTO? empleado = await _service.Obtener_PoId(id);
 
-            if(empleado==null)
+            if (empleado == null)
             {
                 return NotFound("Registro No Existente.");
             }
@@ -44,7 +44,7 @@ namespace Web_API.Handlers.Empleados.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Crear([FromBody]CrearEmpleadoDTO crearEmpleadoDTO)
+        public async Task<IActionResult> Crear([FromBody] CrearEmpleadoDTO crearEmpleadoDTO)
         {
             EmpleadoService _service = new(_empleadoRepository);
 

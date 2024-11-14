@@ -1,7 +1,6 @@
-﻿
-using Web_API.Models.Entities;
+﻿using Web_API.Domain.Entities;
 
-namespace Web_API.Handlers.Empleados.Interfaces
+namespace Web_API.Domain.Repositories
 {
     public interface IEmpleado
     {
