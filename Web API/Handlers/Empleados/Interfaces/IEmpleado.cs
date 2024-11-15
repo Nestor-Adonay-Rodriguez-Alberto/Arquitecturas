@@ -9,7 +9,7 @@ namespace Web_API.Handlers.Empleados.Interfaces
         Task<int> Editar(Empleado empleado);
         Task<int> Eliminar(Empleado empleado);
         Task<Empleado> Obtener_PoId(int Id);
-        Task<List<Empleado>> Listar();
+        Task<(List<Empleado>,int TotalItems)> Listar(int pageNumber, int pageSize);
 
     }
 }

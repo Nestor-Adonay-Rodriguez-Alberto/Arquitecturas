@@ -21,11 +21,11 @@ namespace Web_API.Handlers.Empleados.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Listar(int? pageNumber, int? pageSize)
+        public async Task<IActionResult> Listar(int pageNumber, int pageSize)
         {
             EmpleadoService _service = new(_empleadoRepository);      
 
-            AllEmpleadosDTO allEmpleados = await _service.Listar(pageNumber, pageSize);
+            PaginatedResponseDTO<EmpleadoDTO> allEmpleados = await _service.Listar(pageNumber, pageSize);
 
             return Ok(allEmpleados);
         }

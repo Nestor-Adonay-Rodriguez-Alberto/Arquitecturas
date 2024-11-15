@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Web_API.Handlers.Empleados.DTOs;
 using Web_API.Handlers.Empleados.Interfaces;
+using Web_API.Models.Database;
 using Web_API.Models.Entities;
 
 
@@ -18,22 +19,22 @@ namespace Web_API.Handlers.Empleados.Services
 
 
 
-        public async Task<AllEmpleadosDTO> Listar(int? pageNumber, int? pageSize)
-        {
-            List<Empleado> empleados = await _EmpleadoRepository.Listar();
-            int number = pageNumber ?? 1;
-            int size = pageSize ?? 2;
 
-            // Paginar la lista de empleados dentro de AllEmpleadosDTO
-            var empleadosPaginados = empleados.Skip((number - 1) * size).Take(size).ToList();
+
+
+        public async Task<PaginatedResponseDTO<EmpleadoDTO>> Listar(int pageNumber, int pageSize)
+        {
+            var Results = await _EmpleadoRepository.Listar(pageNumber,pageSize);
+
+            List<Empleado> listaEmpleados = Results.Item1;
+            int TotalItems = Results.Item2;
 
             // DTO a retornar:
-            AllEmpleadosDTO allEmpleados = new();
-            empleados = empleadosPaginados;
+            List<EmpleadoDTO> allEmpleados = new List<EmpleadoDTO>();
 
-            foreach (Empleado empleado in empleados)
+            foreach (Empleado empleado in listaEmpleados)
             {
-                allEmpleados.List_Empleados.Add(new EmpleadoDTO
+                allEmpleados.Add(new EmpleadoDTO
                 {
                     Id = empleado.Id,
                     Nombre = empleado.Nombre,
@@ -43,7 +44,9 @@ namespace Web_API.Handlers.Empleados.Services
                 });
             }
 
-            return allEmpleados;
+            PaginatedResponseDTO<EmpleadoDTO> EmpleadoPaginados = new PaginatedResponseDTO<EmpleadoDTO>(allEmpleados,TotalItems, pageNumber,pageSize);
+
+            return EmpleadoPaginados;
         }
 
         public async Task<EmpleadoDTO> Obtener_PoId(int Id)

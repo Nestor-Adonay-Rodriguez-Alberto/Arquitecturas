@@ -13,15 +13,28 @@ namespace Web_API.Handlers.Empleados.Repositories
         public EmpleadoRepository(MyDBcontext myDBcontext)
         {
             _MyDBcontext = myDBcontext;
-        }
+        } 
 
+         
 
-
-        public async Task<List<Empleado>> Listar()
+        public async Task<(List<Empleado>,int TotalItems)> Listar(int pageNumber, int pageSize)
         {
-            List<Empleado> list = await _MyDBcontext.Empleados.ToListAsync();
+            IQueryable<Empleado> Query = _MyDBcontext.Empleados.AsQueryable();
 
-            return list;
+            // Nose como enviarlo
+            int TotalItems = await _MyDBcontext.Empleados.CountAsync();
+
+            // Elementos a Omitir:
+            int skip = (pageNumber - 1) * pageSize;
+
+            // Obtenemos de DB paginados:
+            List<Empleado> Empleados = await Query
+                .OrderByDescending(x => x.Id)  
+                .Skip(skip)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (Empleados,TotalItems);
         }
 
         public async Task<Empleado> Obtener_PoId(int Id)
