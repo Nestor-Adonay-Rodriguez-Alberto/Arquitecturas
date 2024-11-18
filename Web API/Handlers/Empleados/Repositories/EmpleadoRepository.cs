@@ -14,15 +14,20 @@ namespace Web_API.Handlers.Empleados.Repositories
         {
             _MyDBcontext = myDBcontext;
         } 
-
+         
          
 
-        public async Task<(List<Empleado>,int TotalItems)> Listar(int pageNumber, int pageSize)
+        public async Task<(List<Empleado>,int TotalItems)> Listar(int pageNumber, int pageSize, string? filterNombre)
         {
             IQueryable<Empleado> Query = _MyDBcontext.Empleados.AsQueryable();
 
-            // Nose como enviarlo
             int TotalItems = await _MyDBcontext.Empleados.CountAsync();
+
+            // Aplica el filtro de nombre si se proporciona
+            if (!string.IsNullOrEmpty(filterNombre))
+            {
+                Query = Query.Where(x => x.Nombre.Contains(filterNombre));
+            }
 
             // Elementos a Omitir:
             int skip = (pageNumber - 1) * pageSize;

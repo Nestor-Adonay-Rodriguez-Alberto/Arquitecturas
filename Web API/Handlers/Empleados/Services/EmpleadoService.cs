@@ -13,7 +13,7 @@ namespace Web_API.Handlers.Empleados.Services
         public IEmpleado _EmpleadoRepository;
 
         public EmpleadoService(IEmpleado empleado)
-        {
+        { 
             _EmpleadoRepository = empleado; 
         }
 
@@ -22,9 +22,9 @@ namespace Web_API.Handlers.Empleados.Services
 
 
 
-        public async Task<PaginatedResponseDTO<EmpleadoDTO>> Listar(int pageNumber, int pageSize)
+        public async Task<PaginatedResponseDTO<EmpleadoDTO>> Listar(int pageNumber, int pageSize, string? filterNombre)
         {
-            var Results = await _EmpleadoRepository.Listar(pageNumber,pageSize);
+            var Results = await _EmpleadoRepository.Listar(pageNumber,pageSize, filterNombre);
 
             List<Empleado> listaEmpleados = Results.Item1;
             int TotalItems = Results.Item2;

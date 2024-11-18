@@ -16,16 +16,16 @@ namespace Web_API.Handlers.Empleados.Controllers
          
         public EmpleadoController(IEmpleado empleadoRepository)
         {
-            _empleadoRepository = empleadoRepository;
+            _empleadoRepository = empleadoRepository; 
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> Listar(int pageNumber, int pageSize)
+        public async Task<IActionResult> Listar(int pageNumber, int pageSize, string? filterNombre)
         {
             EmpleadoService _service = new(_empleadoRepository);      
 
-            PaginatedResponseDTO<EmpleadoDTO> allEmpleados = await _service.Listar(pageNumber, pageSize);
+            PaginatedResponseDTO<EmpleadoDTO> allEmpleados = await _service.Listar(pageNumber, pageSize, filterNombre);
 
             return Ok(allEmpleados);
         }
